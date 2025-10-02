@@ -1,0 +1,51 @@
+# %%
+# Data survey seismik
+survey = {
+    "Survey_A": [
+        {"trace_id": 1, "receiver": "R1", "offset": 100, "QC_flag": "OK"},
+        {"trace_id": 2, "receiver": "R2", "offset": 150, "QC_flag": "OK"},
+        {"trace_id": 3, "receiver": "R3", "offset": 200, "QC_flag": "BAD"},
+    ],
+    "Survey_B": [
+        {"trace_id": 4, "receiver": "R1", "offset": 120, "QC_flag": "OK"},
+        {"trace_id": 5, "receiver": "R4", "offset": 250, "QC_flag": "OK"},
+        {"trace_id": 6, "receiver": "R2", "offset": 300, "QC_flag": "BAD"},
+    ],
+    "Survey_C": [
+        {"trace_id": 7, "receiver": "R5", "offset": 180, "QC_flag": "OK"},
+    ]
+}
+
+# 1. Tampilkan semua trace_id yang memiliki QC_flag = BAD
+bad_trace_ids = []
+for lines in survey.values():
+    for trace in lines:
+        if trace["QC_flag"] == "BAD":
+            bad_trace_ids.append(trace["trace_id"])
+
+print("Trace IDs dengan QC_flag = BAD:", bad_trace_ids)
+
+# 2. Hitung jumlah total trace dari seluruh survey
+total_trace = sum(len(lines) for lines in survey.values())
+print("Total trace dari seluruh survey:", total_trace)
+
+# 3. Cari survey yang memiliki jumlah trace paling banyak
+max_trace_survey = max(survey.items(), key=lambda x: len(x[1]))[0]
+print("Survey dengan jumlah trace terbanyak:", max_trace_survey)
+
+# 4. Buat set berisi semua receiver unik yang ada di data
+unique_receivers = set()
+for lines in survey.values():
+    for trace in lines:
+        unique_receivers.add(trace["receiver"])
+
+print("Receiver unik:", unique_receivers)
+
+# 5. Buat dictionary baru {"receiver": jumlah_trace} menghitung berapa kali setiap receiver muncul
+receiver_count = {}
+for lines in survey.values():
+    for trace in lines:
+        receiver = trace["receiver"]
+        receiver_count[receiver] = receiver_count.get(receiver, 0) + 1
+
+print("Jumlah kemunculan receiver:", receiver_count)
