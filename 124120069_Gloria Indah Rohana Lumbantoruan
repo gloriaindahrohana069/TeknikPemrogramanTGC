@@ -1,0 +1,57 @@
+# %%
+# Class induk
+class Sensor:
+    def __init__(self, id_sensor, lokasi, jenis):
+        self.id_sensor = id_sensor
+        self.lokasi = lokasi
+        self.jenis = jenis
+
+    def info(self):
+        return f"Sensor ID: {self.id_sensor}, Lokasi: {self.lokasi}, Jenis: {self.jenis}"
+
+
+# Class turunan
+class SensorSeismik(Sensor):
+    def __init__(self, id_sensor, lokasi, jenis, frekuensi_sampling):
+        super().__init__(id_sensor, lokasi, jenis)
+        self.frekuensi_sampling = frekuensi_sampling
+
+    def jumlah_sampel(self, durasi_detik):
+        """
+        Menghitung jumlah sampel berdasarkan frekuensi_sampling dan durasi waktu.
+        """
+        return self.frekuensi_sampling * durasi_detik
+
+
+# Contoh penggunaan
+sensor1 = Sensor("S001", "Sumatera", "Seismik")
+print(sensor1.info())
+
+sensor2 = SensorSeismik("S002", "Lampung", "Seismik", 100)  # 100 Hz
+print(sensor2.info())
+print("Jumlah sampel dalam 60 detik:", sensor2.jumlah_sampel(60))
+
+# %%
+from abc import ABC, abstractmethod 
+# Abstract Class
+class Survey(ABC):
+    @abstractmethod
+    def processing(self):
+        pass
+
+class SeismikSurvey(Survey):
+    def processing(self):
+        print("Processing Seismik Survey: filtering data seismik...")
+
+class GravitySurvey(Survey):
+    def processing(self):
+        print("Processing Gravity Survey: upward continuatiuon...")
+        
+class MagnetikSurvey(Survey):
+    def processing(self):
+        print("Processing Magnetik Survey: anomaly mapping...")
+
+# test 2 class abstrak survey
+surveys = [SeismikSurvey(), GravitySurvey(), MagnetikSurvey()]
+for s in surveys: 
+    s.processing()
