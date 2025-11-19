@@ -1,0 +1,98 @@
+# tugas modul 2
+# QC Data Seismik
+def qc_seismik(data, ambang_offset):
+    laporan = {}
+
+    for survey, traces in data.items():
+        ok = 0
+        bad = 0
+
+        for trace in traces:
+            if trace["offset"] > ambang_offset:
+               trace["QC_flag"] = "BAD"
+               bad += 1
+            else:
+                trace["QC_flag"] = "OK"
+                ok += 1
+
+        laporan[survey] = {"OK": ok, "BAD": bad}
+    return laporan
+
+#------------------------------
+# contoh cara menjalankan fungsi QC Seismik
+#------------------------------
+if __name__ == "__main__":
+    data_seismik = {
+        "Survey_A": [
+            {"offset": 100},
+            {"offset": 250},
+            {"offset": 180}
+        ],
+        "Survey_B": [
+            {"offset": 300},
+            {"offset": 120}
+        ]
+    }
+
+    hasil = qc_seismik(data_seismik, ambang_offset=200)
+    print("Hasil QC Seismik:")
+    print(hasil)
+
+# Statistik Gravitasi
+def statistik_gravitasi(data):
+    rata_per_survey = {}
+    semua_nilai = []
+
+    # Hitung rata-rata tiap survey dan kumpulkan semua nilai gravitasi
+    for survey, values in data.items():
+        avg = sum(values) / len(values)
+        rata_per_survey[survey] = avg
+        semua_nilai.extend(values)
+
+    # Ambil nilai minimum dan maksimum dari semua survey
+    return {
+        "rata_per_survey": rata_per_survey,
+        "min": min(semua_nilai),
+        "max": max(semua_nilai)
+    }
+
+
+# ------------------------------------------------------
+# Contoh cara menjalankan fungsi Statistik Gravitasi
+# ------------------------------------------------------
+if __name__ == "__main__":
+    data_gravitasi = {
+        "Survey_A": [9.8, 10.1, 9.7],
+        "Survey_B": [9.5, 9.6, 9.9]
+    }
+
+    hasil = statistik_gravitasi(data_gravitasi)
+    print("Statistik Gravitasi:")
+    print(hasil)
+    
+# Analisis Magnetik
+def analisis_magnetik(data):
+    semua = []
+
+    # Gabungkan semua nilai magnetik
+    for survey, values in data.items():
+        semua.extend(values)
+
+    # Ambil nilai unik dan urutkan
+    nilai_unik_sorted = sorted(set(semua))
+
+    return nilai_unik_sorted
+
+
+# ------------------------------------------------------
+# Contoh cara menjalankan fungsi Analisis Magnetik
+# ------------------------------------------------------
+if __name__ == "__main__":
+    data_magnetik = {
+        "Survey_A": [120, 130, 130, 150],
+        "Survey_B": [150, 155, 160]
+    }
+
+    hasil = analisis_magnetik(data_magnetik)
+    print("Analisis Magnetik:")
+    print(hasil)
